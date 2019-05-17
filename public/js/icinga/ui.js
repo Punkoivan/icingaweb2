@@ -694,15 +694,9 @@
                 var $tabs = $tabContainer.children('li');
                 if ($tabContainer[0].scrollHeight > $tabContainer[0].clientHeight) {
 
-                    console.log($tabs.children('a').html() + '\nis too small');
-                    console.log('\n--' + '\n' +
-                        'scHeight: ' + $tabContainer[0].scrollHeight + '\n' +
-                        'clHeight: ' + $tabContainer[0].clientHeight + '\n' +
-                        '--\n');
-
                     $tabContainer.find('.tabs-dropdown').css('display', 'inline-block');
 
-                    // can probably improve logic
+                    // todo: can probably improve logic
                     var $visibleCount = 0;
                     $.each($tabs, function(){
                         if($(this).is(":visible")) {
@@ -710,17 +704,10 @@
                         }
                     });
 
-                    console.log('hide ' + $tabs.slice($visibleCount - 5, -4).children('a').text());
                     $tabs.slice($visibleCount-5, -4).css('display', 'none');
                 } else if ($tabContainer.find('.tabs-dropdown').is(':visible') && $tabContainer.children().is(':hidden')) {
 
-                    console.log($tabs.children('a').html() + '\nstill has space');
-                    console.log('\n--' + '\n' +
-                        'scHeight: ' + $tabContainer[0].scrollHeight + '\n' +
-                        'clHeight: ' + $tabContainer[0].clientHeight + '\n' +
-                        '--\n');
 
-                    // the else branch causes the twitching??
                     var $visibleWidth = 0;
                     $.each($tabs, function(){
                         if($(this).is(":visible")) {
@@ -729,28 +716,17 @@
                     });
 
                     for (var count = 0; count < $tabs.size() - 4; count++) {
-                        console.log('checkin?: ' + $($tabs[count]).children('a').text() + $($tabs[count]).width() + ' ' + ($tabContainer.width() - $visibleWidth));
                         if($($tabs[count]).is(":hidden")) {
-                            if($($tabs[count]).width() < ($tabContainer.width() - $visibleWidth)) {
-                                console.log('checking: ' + $($tabs[count]).children('a').text());
+                            // todo: the gap between tabs causes the twitching! for now solved with the ' + 30'
+                            // but it should be possible to calculate the correct value
+                            if(($($tabs[count]).width()) + 30 < ($tabContainer.width() - $visibleWidth)) {
                                 $($tabs[count]).css('display', 'inline-block');
-                                console.log($($tabs[count]).children('a').text() + ' now visible' + '\n' +
-                                    'tab width: ' + $($tabs[count]).width() + '  remaining width: ' + ($tabContainer.width() - $visibleWidth)
-                                );
 
                                 if ($($tabs[count + 1]).is(":hidden")) {
-                                    console.log('more hidden');
                                     break;
                                 } else {
-                                    console.log('hide burger');
                                     $tabContainer.find('.tabs-dropdown').css('display', 'none');
                                 }
-
-                                console.log(
-                                    'no space for: ' + $($tabs[count]).children('a').text() + '\n' +
-                                    'tab width: ' + ($($tabs[count]).width() + 10) + '  remaining width: ' + ($tabContainer.width() - $visibleWidth) + '\n' +
-                                    'tab hidden? ' + $($tabs[count]).is(":hidden")
-                                );
                             }
                             break;
                         }
