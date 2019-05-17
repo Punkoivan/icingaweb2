@@ -191,16 +191,16 @@
 
         cutContainer: function ($col) {
             var props = {
-              'elements': $('#' + $col.attr('id') + ' > *').detach(),
-              'data': {
-                'data-icinga-url': $col.data('icingaUrl'),
-                'data-icinga-title': $col.data('icingaTitle'),
-                'data-icinga-refresh': $col.data('icingaRefresh'),
-                'data-last-update': $col.data('lastUpdate'),
-                'data-icinga-module': $col.data('icingaModule'),
-                'data-icinga-container-id': $col.data('icingaContainerId')
-              },
-              'class': $col.attr('class')
+                'elements': $('#' + $col.attr('id') + ' > *').detach(),
+                'data': {
+                    'data-icinga-url': $col.data('icingaUrl'),
+                    'data-icinga-title': $col.data('icingaTitle'),
+                    'data-icinga-refresh': $col.data('icingaRefresh'),
+                    'data-last-update': $col.data('lastUpdate'),
+                    'data-icinga-module': $col.data('icingaModule'),
+                    'data-icinga-container-id': $col.data('icingaContainerId')
+                },
+                'class': $col.attr('class')
             };
             this.icinga.loader.stopPendingRequestsFor($col);
             $col.removeData('icingaUrl');
@@ -710,7 +710,7 @@
                         }
                     });
 
-                    console.log('hide ' + $tabs.slice($visibleCount-5, -4).children('a').text());
+                    console.log('hide ' + $tabs.slice($visibleCount - 5, -4).children('a').text());
                     $tabs.slice($visibleCount-5, -4).css('display', 'none');
                 } else if ($tabContainer.find('.tabs-dropdown').is(':visible') && $tabContainer.children().is(':hidden')) {
 
@@ -728,28 +728,32 @@
                         }
                     });
 
-                    for (var count = $tabs.size() - 5; count > 0; count--) {
-                        console.log('checking: ' + $($tabs[count]).children('a').text());
-                        if($($tabs[count]).is(":hidden") && $($tabs[count]).width() + 10 < ($tabContainer.width() - $visibleWidth)) {
-                            $($tabs[count]).css('display', 'inline-block');
-                            console.log($($tabs[count]).children('a').text() + ' now visible' + '\n' +
-                                'tab width: ' + ($($tabs[count]).width() + 10) + '  remaining width: ' +  ($tabContainer.width() - $visibleWidth)
-                            );
+                    for (var count = 0; count < $tabs.size() - 4; count++) {
+                        console.log('checkin?: ' + $($tabs[count]).children('a').text() + $($tabs[count]).width() + ' ' + ($tabContainer.width() - $visibleWidth));
+                        if($($tabs[count]).is(":hidden")) {
+                            if($($tabs[count]).width() < ($tabContainer.width() - $visibleWidth)) {
+                                console.log('checking: ' + $($tabs[count]).children('a').text());
+                                $($tabs[count]).css('display', 'inline-block');
+                                console.log($($tabs[count]).children('a').text() + ' now visible' + '\n' +
+                                    'tab width: ' + $($tabs[count]).width() + '  remaining width: ' + ($tabContainer.width() - $visibleWidth)
+                                );
 
-                            if($($tabs[count + 1]).is(":hidden")) {
-                                console.log('more hidden');
-                                break;
-                            } else {
-                                console.log('hide burger');
-                                $tabContainer.find('.tabs-dropdown').css('display', 'none');
+                                if ($($tabs[count + 1]).is(":hidden")) {
+                                    console.log('more hidden');
+                                    break;
+                                } else {
+                                    console.log('hide burger');
+                                    $tabContainer.find('.tabs-dropdown').css('display', 'none');
+                                }
+
+                                console.log(
+                                    'no space for: ' + $($tabs[count]).children('a').text() + '\n' +
+                                    'tab width: ' + ($($tabs[count]).width() + 10) + '  remaining width: ' + ($tabContainer.width() - $visibleWidth) + '\n' +
+                                    'tab hidden? ' + $($tabs[count]).is(":hidden")
+                                );
                             }
-                        } else {
                             break;
                         }
-                        console.log(
-                            'no space for: ' + $($tabs[count]).children('a').text() + '\n' +
-                        'tab width: ' + ($($tabs[count]).width() + 10) + '  remaining width: ' +  ($tabContainer.width() - $visibleWidth)
-                        );
                     }
                 }
             });
